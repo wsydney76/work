@@ -28,7 +28,6 @@ class Work extends Plugin
 {
     public function init()
     {
-
         Craft::setAlias('@work', $this->getBasePath());
 
         // Set the controllerNamespace based on whether this is a console or web request
@@ -46,7 +45,6 @@ class Work extends Plugin
         Event::on(
             View::class,
             View::EVENT_REGISTER_CP_TEMPLATE_ROOTS, function(RegisterTemplateRootsEvent $event) {
-            $event->roots['work'] = __DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'work';
             $event->roots['customwork'] = Craft::parseEnv('@templates') . DIRECTORY_SEPARATOR . '_work';
         }
         );
