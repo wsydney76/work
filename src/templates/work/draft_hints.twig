@@ -3,12 +3,12 @@
 {# Compare opened draft #}
 <div class="compare-current">
     {% if  entry.isCanonical %}
-        <div id="draft-new" style="display:none">
+        <span id="draft-new" style="display:none">
             <button type="button" class="btn"
                     onclick="compare(-1, {{ entry.siteId }}, 1)">
                 {{ 'Compare Edited with Current'|t('work') }}
             </button>
-        </div>
+        </span>
     {% else %}
         <button type="button" class="btn"
                 onclick="compare({{ entry.draftId }}, {{ entry.siteId }}, {{ entry.isProvisionalDraft() ?: 0 }})">
