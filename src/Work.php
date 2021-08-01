@@ -17,9 +17,11 @@ use craft\events\SetElementTableAttributeHtmlEvent;
 use craft\i18n\PhpMessageSource;
 use craft\services\Dashboard;
 use craft\services\UserPermissions;
+use craft\web\twig\variables\CraftVariable;
 use craft\web\View;
 use wsydney76\work\behaviors\WorkEntryBehavior;
 use wsydney76\work\behaviors\WorkMatrixBehavior;
+use wsydney76\work\services\WorkService;
 use wsydney76\work\widgets\MyProvisionsalDraftsWidget;
 use yii\base\Event;
 use const DIRECTORY_SEPARATOR;
@@ -74,6 +76,14 @@ class Work extends Plugin
             MatrixBlock::EVENT_DEFINE_BEHAVIORS, function(DefineBehaviorsEvent $event) {
             $event->behaviors[] = WorkMatrixBehavior::class;
         });
+        Event::on(
+            CraftVariable::class,
+            CraftVariable::EVENT_INIT, function(Event $event) {
+            /** @var CraftVariable $variable */
+            $variable = $event->sender;
+            $variable->set('work', WorkService::class);
+        }
+        );
 
         // Create Permissions
         Event::on(
