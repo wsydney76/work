@@ -1,7 +1,7 @@
 {% if entry.title != canonicalEntry.title %}
     <div class="field-diff">
         <h2>{{ 'Title'|t('work') }}</h2>
-        {{ _self.attrDiff(entry.title, canonicalEntry.title) }}
+        {{ craft.work.calculateDiff(canonicalEntry.title, entry.title)|raw }}
     </div>
 {% endif %}
 

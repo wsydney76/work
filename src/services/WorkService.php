@@ -2,16 +2,23 @@
 
 namespace wsydney76\work\services;
 
+use Craft;
 use craft\base\Component;
 use Jfcherng\Diff\Differ;
 use Jfcherng\Diff\DiffHelper;
-use Jfcherng\Diff\Factory\RendererFactory;
 use Jfcherng\Diff\Renderer\RendererConstant;
+use wsydney76\work\models\SettingsModel;
+use wsydney76\work\Work;
+use function substr;
 
 class WorkService extends Component
 {
-    public function calculateDiff($old, $new, $rendererName = 'Combined')
+    public function calculateDiff($old, $new)
     {
+
+        /** @var SettingsModel $settings */
+        $settings = Work::getInstance()->getSettings();
+
 
         // https://packagist.org/packages/jfcherng/php-diff
 
@@ -23,26 +30,26 @@ class WorkService extends Component
         $differOptions = [
             // show how many neighbor lines
             // Differ::CONTEXT_ALL can be used to show the whole file
-            'context' => 1,
+            'context' => $settings->diffContext ,
             // ignore case difference
-            'ignoreCase' => false,
+            'ignoreCase' => $settings->diffIgnoreCase,
             // ignore whitespace difference
-            'ignoreWhitespace' => true,
+            'ignoreWhitespace' => $settings->diffIgnoreWhitespace,
         ];
 
         // the renderer class options
         $rendererOptions = [
             // how detailed the rendered HTML in-line diff is? (none, line, word, char)
-            'detailLevel' => 'word',
+            'detailLevel' => $settings->diffDetailLevel,
             // renderer language: eng, cht, chs, jpn, ...
             // or an array which has the same keys with a language file
-            'language' => 'eng',
+            'language' => substr(Craft::$app->language,0,2) == 'de' ? 'deu' : 'eng',
             // show line numbers in HTML renderers
-            'lineNumbers' => true,
+            'lineNumbers' => (bool)$settings->diffLineNumbers,
             // show a separator between different diff hunks in HTML renderers
-            'separateBlock' => true,
+            'separateBlock' => (bool)$settings->diffSeparateBlock,
             // show the (table) header
-            'showHeader' => false,
+            'showHeader' => (bool)$settings->diffShowHeader,
             // the frontend HTML could use CSS "white-space: pre;" to visualize consecutive whitespaces
             // but if you want to visualize them in the backend with "&nbsp;", you can set this to true
             'spacesToNbsp' => false,
@@ -51,7 +58,7 @@ class WorkService extends Component
             // this option is currently only for the Combined renderer.
             // it determines whether a replace-type block should be merged or not
             // depending on the content changed ratio, which values between 0 and 1.
-            'mergeThreshold' => 0.8,
+            'mergeThreshold' => $settings->diffMergeThreshold,
             // this option is currently only for the Unified and the Context renderers.
             // RendererConstant::CLI_COLOR_AUTO = colorize the output if possible (default)
             // RendererConstant::CLI_COLOR_ENABLE = force to colorize the output
@@ -76,7 +83,7 @@ class WorkService extends Component
             'wrapperClasses' => ['diff-wrapper'],
         ];
 
-        return DiffHelper::calculate($old, $new, $rendererName, $differOptions, $rendererOptions);
+        return DiffHelper::calculate($old, $new, $settings->diffRendererName, $differOptions, $rendererOptions);
 
     }
 }

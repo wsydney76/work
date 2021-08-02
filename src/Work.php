@@ -14,13 +14,13 @@ use craft\events\RegisterElementTableAttributesEvent;
 use craft\events\RegisterTemplateRootsEvent;
 use craft\events\RegisterUserPermissionsEvent;
 use craft\events\SetElementTableAttributeHtmlEvent;
-use craft\i18n\PhpMessageSource;
 use craft\services\Dashboard;
 use craft\services\UserPermissions;
 use craft\web\twig\variables\CraftVariable;
 use craft\web\View;
 use wsydney76\work\behaviors\WorkEntryBehavior;
 use wsydney76\work\behaviors\WorkMatrixBehavior;
+use wsydney76\work\models\SettingsModel;
 use wsydney76\work\services\WorkService;
 use wsydney76\work\widgets\MyProvisionsalDraftsWidget;
 use yii\base\Event;
@@ -28,6 +28,8 @@ use const DIRECTORY_SEPARATOR;
 
 class Work extends Plugin
 {
+    public $hasCpSettings = true;
+
     public function init()
     {
         Craft::setAlias('@work', $this->getBasePath());
@@ -163,4 +165,10 @@ class Work extends Plugin
         }
         );
     }
+
+    protected function createSettingsModel()
+    {
+        return new SettingsModel();
+    }
+
 }
