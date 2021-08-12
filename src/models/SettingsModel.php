@@ -14,7 +14,7 @@ class SettingsModel extends Model
 
     public $diffLineNumbers = true;
     public $diffSeparateBlock = true;
-    public $diffShowHeader = true;
+    public $diffShowHeader = false;
 
     public $diffMergeThreshold = 0.8;
 }
