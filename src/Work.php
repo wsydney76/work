@@ -32,7 +32,6 @@ class Work extends Plugin
 
     public function init()
     {
-        Craft::setAlias('@work', $this->getBasePath());
 
         // Set the controllerNamespace based on whether this is a console or web request
         $this->controllerNamespace = Craft::$app->request->isConsoleRequest ?
