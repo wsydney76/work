@@ -28,8 +28,6 @@ use const DIRECTORY_SEPARATOR;
 
 class Work extends Plugin
 {
-    public $hasCpSettings = true;
-    public $hasCpSection = true;
 
     public function init()
     {
@@ -92,6 +90,9 @@ class Work extends Plugin
             UserPermissions::class,
             UserPermissions::EVENT_REGISTER_PERMISSIONS, function(RegisterUserPermissionsEvent $event) {
             $event->permissions['Work Plugin'] = [
+                'accessPlugin-work' => [
+                    'label' => Craft::t('work', 'Access Plugin Work')
+                ],
                 'viewpeerprovisionaldrafts' => [
                     'label' => Craft::t('work', 'View provisional drafts of other users')
                 ],
