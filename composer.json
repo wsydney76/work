@@ -2,7 +2,7 @@
   "name": "wsydney76/work",
   "description": "Extend draft workflow",
   "type": "craft-plugin",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "keywords": [
     "craft",
     "cms",
@@ -34,7 +34,7 @@
     "name": "Work",
     "handle": "work",
     "hasCpSettings": false,
-    "hasCpSection": false,
+    "hasCpSection": true,
     "changelogUrl": "https://raw.githubusercontent.com/wsydney76/work/master/CHANGELOG.md",
     "class": "wsydney76\\work\\Work"
   }

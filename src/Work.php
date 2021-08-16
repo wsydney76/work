@@ -29,6 +29,7 @@ use const DIRECTORY_SEPARATOR;
 class Work extends Plugin
 {
     public $hasCpSettings = true;
+    public $hasCpSection = true;
 
     public function init()
     {
