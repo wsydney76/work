@@ -1,4 +1,4 @@
-{% if entry.isCanonical %}
+{% if entry.isCanonical and not entry.isFresh %}
     {% set hasDrafts = craft.entries.draftOf(entry).anyStatus().exists() %}
     {% if not hasDrafts %}
         {% set hasDrafts = craft.entries.draftOf(entry).provisionalDrafts(true).anyStatus().exists() %}
