@@ -19,7 +19,6 @@ class WorkService extends Component
         /** @var SettingsModel $settings */
         $settings = Work::getInstance()->getSettings();
 
-
         // https://packagist.org/packages/jfcherng/php-diff
 
         // renderer class name:

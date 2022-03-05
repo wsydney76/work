@@ -9,7 +9,7 @@
     {% set blockHasMoved = block.sortOrder != canonicalBlock.sortOrder %}
     {% set blockStatusChanged = block.status != canonicalBlock.status %}
 
-    {% for field in block.fieldLayout.fields %}
+    {% for field in block.fieldLayout.customFields %}
         {% if block.isFieldModified(field.handle) %}
             {% set blockHasChanged = true %}
         {% endif %}
@@ -65,7 +65,7 @@
 
 
 {% macro blockContent(block, count = 9999) %}
-    {% for field in block.fieldLayout.fields %}
+    {% for field in block.fieldLayout.customFields %}
         {% if loop.index <= count %}
             <div class="field-diff field-diff-level-1">
                 <h2>{{ field.name }}</h2>

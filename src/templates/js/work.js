@@ -4,7 +4,7 @@ function compare(draftId, siteId, isProvisionalDraft) {
     if (draftId == -1)
         draftId = newDraftId
 
-    url = `${compareUrl}?draftId=${draftId}&siteId=${siteId}&isProvisionalDraft=${isProvisionalDraft}`
+    url = `${compareUrl}&draftId=${draftId}&siteId=${siteId}&isProvisionalDraft=${isProvisionalDraft}`
     $.get(url, function(data) {
             var slideout = new Craft.Slideout(data, {
                 containerAttributes: {class: 'compare-container'}
@@ -14,6 +14,8 @@ function compare(draftId, siteId, isProvisionalDraft) {
             alert("Error");
         })
 }
+
+// TODO: Check window.draftEditor in Craft 4
 
 if (window.draftEditor) {
     window.draftEditor.on('createProvisionalDraft', function() {
