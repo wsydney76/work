@@ -36,7 +36,7 @@
     <h1>
         {% embed 'work/compare/columns.twig' %}
             {% block left %}
-                {{ entry.isProvisionalDraft() ? 'Edited'|t('work') : 'Draft'|t('work') }}
+                {{ entry.isProvisionalDraft ? 'Edited'|t('work') : 'Draft'|t('work') }}
             {% endblock %}
             {% block right %}
                 {{ 'Current'|t('work') }}

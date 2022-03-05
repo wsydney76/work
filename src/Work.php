@@ -14,6 +14,7 @@ use craft\events\RegisterElementTableAttributesEvent;
 use craft\events\RegisterTemplateRootsEvent;
 use craft\events\RegisterUserPermissionsEvent;
 use craft\events\SetElementTableAttributeHtmlEvent;
+use craft\helpers\App;
 use craft\services\Dashboard;
 use craft\services\UserPermissions;
 use craft\web\twig\variables\CraftVariable;
@@ -47,22 +48,23 @@ class Work extends Plugin
         Event::on(
             View::class,
             View::EVENT_REGISTER_CP_TEMPLATE_ROOTS, function(RegisterTemplateRootsEvent $event) {
-            $event->roots['customwork'] = Craft::parseEnv('@templates') . DIRECTORY_SEPARATOR . '_work';
+            $event->roots['customwork'] = App::parseEnv('@templates') . DIRECTORY_SEPARATOR . '_work';
         }
         );
 
         // Inject template into entries edit screen
         $user = Craft::$app->user->identity;
         if ($user) {
-            Craft::$app->view->hook('cp.entries.edit.meta', function(array $context) {
-                $entry = $context['entry'];
-                if ($entry === null) {
-                    return '';
+            Event::on(
+                Entry::class,
+                Entry::EVENT_DEFINE_SIDEBAR_HTML,
+                function(DefineHtmlEvent $event) {
+                    $event->html .= Craft::$app->view->renderTemplate(
+                        'work/draft_hints',
+                        ['entry' => $event->sender]);
                 }
-                return Craft::$app->view->renderTemplate(
-                    'work/draft_hints',
-                    ['entry' => $entry]);
-            });
+            );
+
         }
 
         // Register Behavior
@@ -90,15 +92,19 @@ class Work extends Plugin
             UserPermissions::class,
             UserPermissions::EVENT_REGISTER_PERMISSIONS, function(RegisterUserPermissionsEvent $event) {
             $event->permissions['Work Plugin'] = [
-                'accessPlugin-work' => [
-                    'label' => Craft::t('work', 'Access Plugin Work')
-                ],
-                'viewpeerprovisionaldrafts' => [
-                    'label' => Craft::t('work', 'View provisional drafts of other users')
-                ],
-                'transferprovisionaldrafts' => [
-                    'label' => Craft::t('work', 'Transfer other users provisional draft to own account')
+                'heading' => 'Work Plugin',
+                'permissions' => [
+                    'accessPlugin-work' => [
+                        'label' => Craft::t('work', 'Access Plugin Work'),
+                    ],
+                    'viewpeerprovisionaldrafts' => [
+                        'label' => Craft::t('work', 'View provisional drafts of other users')
+                    ],
+                    'transferprovisionaldrafts' => [
+                        'label' => Craft::t('work', 'Transfer other users provisional draft to own account')
+                    ]
                 ]
+
             ];
         }
         );
@@ -167,7 +173,7 @@ class Work extends Plugin
         );
     }
 
-    protected function createSettingsModel()
+    protected function createSettingsModel(): ?\craft\base\Model
     {
         return new SettingsModel();
     }

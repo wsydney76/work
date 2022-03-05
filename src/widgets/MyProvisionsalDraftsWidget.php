@@ -13,12 +13,12 @@ class MyProvisionsalDraftsWidget extends Widget
         return Craft::t('work', 'My Open Edits');
     }
 
-    public static function icon()
+    public static function icon(): ?string
     {
         return Craft::getAlias('@appicons/draft.svg');
     }
 
-    public function getBodyHtml()
+    public function getBodyHtml(): ?string
     {
         $entries = Entry::find()
             ->drafts(true)

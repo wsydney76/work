@@ -11,8 +11,8 @@
         </span>
     {% else %}
         <button type="button" class="btn"
-                onclick="compare({{ entry.draftId }}, {{ entry.siteId }}, {{ entry.isProvisionalDraft() ?: 0 }})">
-            {% if entry.isProvisionalDraft() %}
+                onclick="compare({{ entry.draftId }}, {{ entry.siteId }}, {{ entry.isProvisionalDraft ?: 0 }})">
+            {% if entry.isProvisionalDraft %}
                 {{ 'Compare Edited with Current'|t('work') }}
             {% else %}
                 {{ 'Compare Draft with Current'|t('work') }}
@@ -60,7 +60,7 @@
                         class: ['btn', 'drafts-warning', 'drafts-noteditable'],
                         title: draft.draftName ~ ' ' ~ (user ? user.fullName : 'n/a' ~ ' ') ~ draft.dateUpdated|date,
                         text: "#{draft.draftName}",
-                        onclick:"compare(#{ draft.draftId }, #{ draft.siteId }, #{ draft.isProvisionalDraft() ?: 0})"
+                        onclick:"compare(#{ draft.draftId }, #{ draft.siteId }, #{ draft.isProvisionalDraft ?: 0})"
                     }) }}
                 {% endif %}
             {% endfor %}
@@ -97,7 +97,7 @@
                             class: ['btn', 'drafts-warning', 'drafts-noteditable'],
                             title: draft.draftName ~ ' ' ~ (user ? user.fullName : 'n/a' ~ ' ') ~ draft.dateUpdated|date,
                             text: "#{user.fullName} #{draft.dateUpdated|date}",
-                            onclick:"compare(#{ draft.draftId }, #{ draft.siteId }, #{ draft.isProvisionalDraft()})"
+                            onclick:"compare(#{ draft.draftId }, #{ draft.siteId }, #{ draft.isProvisionalDraft})"
                         }) }}
                     {% endif %}
                 {% endfor %}
@@ -113,7 +113,7 @@ compareUrl = "{{ cpUrl('work/compare') }}"
 newDraftId = -1
 {% endjs %}
 
-{% js %}
+{% js at head %}
 {% include 'work/js/work.js' %}
 {% endjs %}
 
