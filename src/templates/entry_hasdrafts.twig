@@ -6,8 +6,6 @@
     {% if hasDrafts %}
         <div class="meta read-only warning">
             {{ 'This entry has open drafts'|t('work') }}!
-            <a target="_blank" class="btn" title="Open the full edit page in a new tab"
-               href="{{ entry.cpEditUrl }}">{{ 'Open in new tab'|t('work') }}</a>
         </div>
     {% endif %}
 {% endif %}
