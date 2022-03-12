@@ -15,12 +15,9 @@ function compare(draftId, siteId, isProvisionalDraft) {
         })
 }
 
-// TODO: Check window.draftEditor in Craft 4
-
-if (window.draftEditor) {
-    window.draftEditor.on('createProvisionalDraft', function() {
-        newDraftId = window.draftEditor.settings.draftId
+setTimeout(() => {
+    Craft.cp.$primaryForm.data('elementEditor').on('createProvisionalDraft', function() {
+        newDraftId = Craft.cp.$primaryForm.data('elementEditor').settings.draftId
         $('#draft-new').css('display', '')
     });
-
-}
+}, 500)

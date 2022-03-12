@@ -46,7 +46,7 @@ class WorkEntryBehavior extends Behavior
 
         // Sub-Field changed?
         foreach ($blocks as $block) {
-            foreach ($block->fieldLayout->fields as $matrixField) {
+            foreach ($block->fieldLayout->getCustomFields() as $matrixField) {
                 if ($block->isFieldModified($matrixField->handle)) {
                     return true;
                 }

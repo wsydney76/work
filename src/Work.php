@@ -49,23 +49,7 @@ class Work extends Plugin
             View::class,
             View::EVENT_REGISTER_CP_TEMPLATE_ROOTS, function(RegisterTemplateRootsEvent $event) {
             $event->roots['customwork'] = App::parseEnv('@templates') . DIRECTORY_SEPARATOR . '_work';
-        }
-        );
-
-        // Inject template into entries edit screen
-        $user = Craft::$app->user->identity;
-        if ($user) {
-            Event::on(
-                Entry::class,
-                Entry::EVENT_DEFINE_SIDEBAR_HTML,
-                function(DefineHtmlEvent $event) {
-                    $event->html .= Craft::$app->view->renderTemplate(
-                        'work/draft_hints',
-                        ['entry' => $event->sender]);
-                }
-            );
-
-        }
+        });
 
         // Register Behavior
         Event::on(
@@ -106,8 +90,7 @@ class Work extends Plugin
                 ]
 
             ];
-        }
-        );
+        });
 
         // Register Widgets
         Event::on(
@@ -121,8 +104,8 @@ class Work extends Plugin
             Entry::class,
             Element::EVENT_REGISTER_TABLE_ATTRIBUTES, function(RegisterElementTableAttributesEvent $event) {
             $event->tableAttributes['hasProvisionalDraft'] = ['label' => Craft::t('work', 'Edited')];
-        }
-        );
+        });
+
         Event::on(
             Entry::class,
             Element::EVENT_SET_TABLE_ATTRIBUTE_HTML, function(SetElementTableAttributeHtmlEvent $event) {
@@ -160,17 +143,23 @@ class Work extends Plugin
             }
         });
 
-        // Add hint in entry slideouts
+        // Add hint in entry sidebar
         Event::on(
             Element::class,
             Element::EVENT_DEFINE_SIDEBAR_HTML, function(DefineHtmlEvent $event) {
             if ($event->sender instanceof Entry) {
-                $event->html = Craft::$app->view->renderTemplate('work/entry_hasdrafts.twig', [
+                $event->html =
+                    Craft::$app->view->renderTemplate('work/entry_hasdrafts.twig', [
                         'entry' => $event->sender
                     ]) . $event->html;
+
+                if (!Craft::$app->request->isAjax) {
+                    $event->html .= Craft::$app->view->renderTemplate('work/draft_hints.twig', [
+                        'entry' => $event->sender
+                    ]);
+                }
             }
-        }
-        );
+        });
     }
 
     protected function createSettingsModel(): ?\craft\base\Model
